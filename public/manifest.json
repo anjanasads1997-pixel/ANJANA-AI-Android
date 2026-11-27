@@ -1,0 +1,8 @@
+{
+  "name": "ANJANA AI",
+  "short_name": "ANJANA AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061326",
+  "theme_color": "#061326"
+}

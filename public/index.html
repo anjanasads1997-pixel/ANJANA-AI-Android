@@ -1,13 +1,22 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="si">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ANJANA AI</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06172b"><title>ANJANA AI</title>
+<link rel="manifest" href="/manifest.json"><link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>ANJANA AI</h1>
-  <p>Android AI Assistant</p>
-</body>
-</html>
+<main class="app">
+<header><div class="logo">A</div><div><h1>ANJANA AI</h1><p>Your Personal AI Assistant · Sinhala | English</p></div><span id="status">Ready</span></header>
+<section class="avatar-panel">
+<div class="avatar-wrap"><img id="avatar" src="/avatar-placeholder.svg" alt="ANJANA AI avatar"><div class="avatar-label">ANJANA AI · Avatar</div></div>
+<div class="avatar-controls"><button id="startAvatar" class="primary">Start Avatar</button><button id="voiceToggle">Voice: On</button></div>
+<p class="hint" id="avatarHint">Avatar preview. Add your approved avatar image to public/avatar.png. Live video/lip-sync needs the configured LiveAvatar session adapter.</p>
+</section>
+<section class="chat-panel"><div class="chat-title">AI Conversation <small>Private session</small></div>
+<div id="messages" aria-live="polite"><div class="bubble ai">ආයුබෝවන්! මම ANJANA AI. ඔබට උදව් කරන්නේ කෙසේද?</div></div>
+<form id="chatForm"><input id="message" autocomplete="off" placeholder="ඔබගේ පණිවිඩය ලියන්න..." aria-label="Message"><button class="primary" type="submit">Send</button></form>
+<div class="tools"><button id="mic">🎙 Voice Input</button><label>Language <select id="lang"><option value="si-LK">සිංහල</option><option value="en-US">English</option></select></label></div>
+</section><footer>ANJANA AI · Mobile Assistant · Created by ICT with Anjana</footer>
+</main><script src="/app.js"></script>
+</body></html>

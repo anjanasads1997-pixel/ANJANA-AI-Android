@@ -1,0 +1,1 @@
+self.addEventListener('install',e=>e.waitUntil(caches.open('anjana-shell-v1').then(c=>c.addAll(['/','/style.css','/app.js','/avatar-placeholder.svg']))));self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||new URL(e.request.url).pathname.startsWith('/api/'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
