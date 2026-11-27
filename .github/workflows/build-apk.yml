@@ -1,5 +1,4 @@
 
-
 name: Build ANJANA AI Android APK
 
 on:
@@ -13,7 +12,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Android APK
+    name: Build ANJANA AI APK
     runs-on: ubuntu-latest
 
     steps:
@@ -34,26 +33,196 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Verify project files
+      - name: Create web assets if missing
         run: |
-          echo "Checking ANJANA AI project..."
-          ls -la
+          mkdir -p public
+
+          if [ ! -f public/index.html ]; then
+            cat > public/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+            <title>ANJANA AI</title>
+            <style>
+              * { box-sizing: border-box; }
+              body {
+                margin: 0;
+                background: #10131b;
+                color: white;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+              }
+              header {
+                padding: 18px;
+                text-align: center;
+                background: #191e2b;
+                font-size: 22px;
+                font-weight: bold;
+              }
+              .avatar {
+                margin: 25px auto 12px;
+                width: 130px;
+                height: 130px;
+                border-radius: 50%;
+                background: #29364f;
+                display: grid;
+                place-items: center;
+                font-size: 65px;
+              }
+              #status {
+                text-align: center;
+                color: #aab8d0;
+                padding: 8px;
+              }
+              #chat {
+                flex: 1;
+                overflow-y: auto;
+                padding: 14px;
+              }
+              .msg {
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 12px;
+                background: #202838;
+                white-space: pre-wrap;
+              }
+              .user { background: #284b76; }
+              footer {
+                display: flex;
+                gap: 8px;
+                padding: 12px;
+                background: #191e2b;
+              }
+              input {
+                flex: 1;
+                min-width: 0;
+                padding: 13px;
+                border-radius: 10px;
+                border: 0;
+                font-size: 16px;
+              }
+              button {
+                padding: 12px;
+                border: 0;
+                border-radius: 10px;
+                background: #397ee8;
+                color: white;
+                font-size: 16px;
+              }
+            </style>
+          </head>
+          <body>
+            <header>ANJANA AI</header>
+            <div class="avatar">🤖</div>
+            <div id="status">AI Assistant</div>
+            <main id="chat">
+              <div class="msg">
+                Welcome to ANJANA AI.
+                Enter your server URL to connect.
+              </div>
+            </main>
+            <footer>
+              <input id="message"
+                placeholder="Type your message..."
+                autocomplete="off">
+              <button id="send">Send</button>
+            </footer>
+            <script>
+              const chat = document.getElementById("chat");
+              const input = document.getElementById("message");
+              const status = document.getElementById("status");
+
+              function addMessage(text, cls) {
+                const div = document.createElement("div");
+                div.className = "msg " + cls;
+                div.textContent = text;
+                chat.appendChild(div);
+                chat.scrollTop = chat.scrollHeight;
+              }
+
+              document.getElementById("send")
+                .addEventListener("click", async () => {
+                  const message = input.value.trim();
+                  if (!message) return;
+
+                  input.value = "";
+                  addMessage(message, "user");
+                  status.textContent = "Thinking...";
+
+                  try {
+                    let server = prompt(
+                      "Enter your deployed ANJANA AI server URL",
+                      "https://your-server.onrender.com"
+                    );
+
+                    if (!server) {
+                      status.textContent = "Server not configured";
+                      return;
+                    }
+
+                    server = server.replace(/\/+$/, "");
+
+                    const response = await fetch(
+                      server + "/api/chat",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ message })
+                      }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                      throw new Error(data.error || "Request failed");
+                    }
+
+                    addMessage(data.reply || "No reply", "");
+                    status.textContent = "Ready";
+                  } catch (error) {
+                    addMessage(
+                      "Connection error: " + error.message,
+                      ""
+                    );
+                    status.textContent = "Connection failed";
+                  }
+                });
+            </script>
+          </body>
+          </html>
+          HTML
+          fi
+
+      - name: Verify project configuration
+        run: |
           test -f package.json
           test -f capacitor.config.json
+          test -f public/index.html
+          echo "Web assets ready"
 
-      - name: Prepare Capacitor Android
+      - name: Add Android platform
         run: |
-          npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap add android
-          npx cap sync android
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
 
-      - name: Build APK
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ANJANA-AI-Android-APK
