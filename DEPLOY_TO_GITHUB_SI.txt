@@ -1,0 +1,9 @@
+1) ZIP එක extract කරන්න.
+2) GitHub හි New repository එකක් සාදන්න: ANJANA-AI-Android
+3) ZIP තුළ ඇති files/folders සියල්ල repository root එකට upload/commit කරන්න (hidden .github folder ද ඇතුළත් කරන්න).
+4) Actions tab → Build ANJANA AI Android APK → Run workflow.
+5) Success වූ run එක open කර Artifacts → anjana-ai-debug-apk download කරන්න.
+6) Render හි Environment variables set කර Web Service එක deploy කරන්න; Android APK එකේ API key කිසිවක් නැත.
+
+NOTE: Avatar preview placeholder එකකි. ඔබ කලින් avatar image එක public/avatar.png ලෙස දමා public/index.html හි image src එක /avatar.png කරන්න.
+LiveAvatar session create/lip-sync streaming endpoint provider account API schema අනුව implement කිරීම තවම pending. Starter එකේ session route පැහැදිලි placeholder එකක් ලෙස දක්වා ඇත; එය සම්පූර්ණ live lip-sync app එකක් බවට ව්‍යාජ ලෙස ප්‍රකාශ නොකරයි.

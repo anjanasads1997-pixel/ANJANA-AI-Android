@@ -1,0 +1,8 @@
+{
+  "appId": "lk.anjana.aiassistant",
+  "appName": "ANJANA AI",
+  "webDir": "public",
+  "server": {
+    "androidScheme": "https"
+  }
+}

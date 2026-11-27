@@ -1,0 +1,20 @@
+{
+  "name": "anjana-ai-android-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ANJANA AI mobile avatar and chat starter",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node scripts/build.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "dotenv": "^16.4.7",
+    "openai": "^4.77.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/android": "^6.2.0"
+  }
+}
